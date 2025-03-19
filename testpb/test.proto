@@ -1,0 +1,39 @@
+syntax = "proto3";
+
+package test;
+
+option go_package="github.com/xavicci/rsg1;testpb";
+
+
+message Test {
+	string id=1;
+	string name=2;
+}
+
+message Question {
+	string id=1;
+
+}
+
+
+message GestTestRequest {
+	string id=1;
+	string anwser=2;
+	string question=3;
+	string test_id=4;
+}
+
+message SetTestResponse {
+	string id=1;
+	string name=2;
+}
+
+message SetQuestionResponse {
+	bool ok=1;
+}
+
+service TestService{
+	rpc GetTest(GestTestRequest) returns (Test);
+	rpc SetTest(Test) returns (SetTestResponse);
+	rpc SetQuestion(stream Question) returns (SetQuestionResponse);
+}

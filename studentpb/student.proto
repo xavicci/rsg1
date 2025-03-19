@@ -16,7 +16,7 @@ message GetStudentRequest {
 }
 
 message SetStudentResponse {
-    Student id =1;
+    string id =1;
 }
 
 service StudentService {

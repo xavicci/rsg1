@@ -27,6 +27,11 @@ func (repo *PostgresRepository) SetStudent(ctx context.Context, student *models.
 	return err
 }
 
+func (repo *PostgresRepository) SetTest(ctx context.Context, test *models.Test) error {
+	_, err := repo.db.ExecContext(ctx, "INSERT INTO test (id, name) VALUES ($1, $2)", test.Id, test.Name)
+	return err
+}
+
 func (repo *PostgresRepository) GetStudent(ctx context.Context, id string) (*models.Student, error) {
 
 	var student models.Student
@@ -49,4 +54,27 @@ func (repo *PostgresRepository) GetStudent(ctx context.Context, id string) (*mod
 		return &student, nil
 	}
 	return &student, nil
+}
+func (repo *PostgresRepository) GetTest(ctx context.Context, id string) (*models.Test, error) {
+
+	var test models.Test
+	rows, err := repo.db.QueryContext(ctx, "SELECT id, name FROM test WHERE id = $1", id)
+	if err != nil {
+		return nil, err
+	}
+	defer func() {
+		err := rows.Close()
+		if err != nil {
+			log.Fatal(err)
+		}
+	}()
+
+	for rows.Next() {
+		err := rows.Scan(&test.Id, &test.Name)
+		if err != nil {
+			return nil, err
+		}
+		return &test, nil
+	}
+	return &test, nil
 }
