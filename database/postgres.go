@@ -78,3 +78,31 @@ func (repo *PostgresRepository) GetTest(ctx context.Context, id string) (*models
 	}
 	return &test, nil
 }
+
+func (repo *PostgresRepository) SetQuestion(ctx context.Context, question *models.Question) error {
+	_, err := repo.db.ExecContext(ctx, "INSERT INTO questions (id, test_id, question, answer) VALUES ($1, $2, $3, $4)", question.Id, question.TestId, question.Question, question.Answer)
+	return err
+}
+
+func (repo *PostgresRepository) GetQuestion(ctx context.Context, id string) (*models.Question, error) {
+	var question models.Question
+	rows, err := repo.db.QueryContext(ctx, "SELECT id, test_id, question, answer FROM questions WHERE id = $1", id)
+	if err != nil {
+		return nil, err
+	}
+	defer func() {
+		err := rows.Close()
+		if err != nil {
+			log.Fatal(err)
+		}
+	}()
+
+	for rows.Next() {
+		err := rows.Scan(&question.Id, &question.TestId, &question.Question, &question.Answer)
+		if err != nil {
+			return nil, err
+		}
+		return &question, nil
+	}
+	return &question, nil
+}

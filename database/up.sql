@@ -1,4 +1,4 @@
-DROP TABLE IF EXIST students;
+DROP TABLE IF EXISTS students;
 
 CREATE TABLE students (
     id VARCHAR(32) PRIMARY KEY,
@@ -10,5 +10,19 @@ DROP TABLE IF EXISTS test;
 
 CREATE TABLE test (
     id VARCHAR(32) PRIMARY KEY,
-    name VARCHAR(255) NOT NULL,
-)
+    name VARCHAR(255) NOT NULL
+);
+
+
+DROP TABLE IF EXISTS questions;
+
+CREATE TABLE questions (
+    id VARCHAR(32) PRIMARY KEY,
+    test_id VARCHAR(32) NOT NULL,
+    question VARCHAR(255) NOT NULL,
+    answer VARCHAR(255) NOT NULL,
+    FOREIGN KEY (test_id) REFERENCES test(id)
+);
+
+
+
