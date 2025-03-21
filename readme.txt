@@ -10,3 +10,4 @@ protoc --go_out=. --go_opt=paths=source_relative --go-grpc_out=. --go-grpc_opt=p
 docker build . -t server-grpc-db
 docker run -p 54321:5432 server-grpc-db
 go run server-student/main.go
+mod
