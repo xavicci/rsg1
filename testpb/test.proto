@@ -1,8 +1,8 @@
 syntax = "proto3";
-
+import "studentpb/student.proto";
 package test;
 
-option go_package="github.com/xavicci/rsg1;testpb";
+option go_package="github.com/xavicci/rsg1/testpb";
 
 
 message Test {
@@ -12,8 +12,11 @@ message Test {
 
 message Question {
 	string id=1;
-
+	string answer=2;
+	string question=3;
+	string test_id=4;
 }
+
 
 
 message GestTestRequest {
@@ -32,8 +35,21 @@ message SetQuestionResponse {
 	bool ok=1;
 }
 
+message EnrollmentRequest {
+	string student_id =1;
+	string test_id =2;
+}
+
+message GetStudentsPerTestRequest {
+	string test_id =1;
+
+}
+
+
 service TestService{
 	rpc GetTest(GestTestRequest) returns (Test);
 	rpc SetTest(Test) returns (SetTestResponse);
 	rpc SetQuestion(stream Question) returns (SetQuestionResponse);
-}
+	rpc EnrollStudents(stream EnrollmentRequest) returns (SetQuestionResponse);
+	rpc GetStudentsPerTest(GetStudentsPerTestRequest) returns (stream student.Student);
+} 

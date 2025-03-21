@@ -18,12 +18,11 @@ func main() {
 	}
 
 	repo, err := database.NewPostgresRepository("postgres://postgres:postgres@localhost:54321/postgres?sslmode=disable")
-
-	server := server.NewStudentServer(repo)
-
 	if err != nil {
 		log.Fatal(err)
 	}
+
+	server := server.NewStudentServer(repo)
 
 	s := grpc.NewServer()
 
